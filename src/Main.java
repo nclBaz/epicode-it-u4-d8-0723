@@ -37,14 +37,10 @@ public class Main {
 		// **************************** SUPPLIER *****************************
 		Supplier<Integer> randomNumbersSupplier = () -> {
 			Random rndm = new Random();
-			return rndm.nextInt(1, 101);
+			return rndm.nextInt(1, 1001);
 		};
 
-		List<Integer> randomIntegers = new ArrayList<>();
-		for (int i = 0; i < 100; i++) {
-			randomIntegers.add(randomNumbersSupplier.get());
-		}
-		System.out.println(randomIntegers);
+
 		Supplier<User> userSupplier = () -> new User("NOME", "COGNOME", randomNumbersSupplier.get());
 
 		List<User> usersList = new ArrayList<>();
@@ -52,7 +48,7 @@ public class Main {
 			usersList.add(userSupplier.get());
 		}
 
-		System.out.println(usersList);
+		// System.out.println(usersList);
 
 		Supplier<List<User>> random100 = () -> {
 			List<User> usersList2 = new ArrayList<>();
@@ -62,7 +58,21 @@ public class Main {
 			return usersList2;
 		};
 
-		System.out.println(random100.get());
-		System.out.println(random100.get());
+		usersList.forEach(user -> System.out.println(user));
+		// usersList.forEach(System.out::println); // Identica alla riga precedente però un pelo più compatta
+
+		usersList.stream().forEach(user -> System.out.println(user));
+
+		// ************************************************** STREAMS - FILTER ***********************************
+		List<Integer> randomIntegers = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			randomIntegers.add(randomNumbersSupplier.get());
+		}
+		System.out.println(randomIntegers);
+		System.out.println("Elenco numeri > 0 e < 100");
+
+		randomIntegers.stream().filter(num -> num > 0 && num < 100).forEach(num -> System.out.println(num));
+		// la stessa operazione di sopra può essere anche effettuata con un Predicate se definito in precedenza
+		randomIntegers.stream().filter(isMoreThanZero.and(isLessThanHundred)).forEach(num -> System.out.println(num));
 	}
 }
