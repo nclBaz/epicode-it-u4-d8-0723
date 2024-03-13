@@ -4,6 +4,7 @@ import functional_interfaces.StringModifier;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class Main {
 	public static void main(String[] args) {
@@ -84,10 +85,33 @@ public class Main {
 		// ************************************************** RESTITUIRE UNA LISTA ***********************************
 		List<Integer> etàUtentiMinorenni = usersList.stream().filter(user -> user.getAge() < 18).map(user -> user.getAge()).toList();
 		// toList() termina lo Stream facendo finire tutti i dati in una Lista. toList è un'alternativa un po' più pratica al .collect
-		System.out.println(etàUtentiMinorenni);
 
 		List<String> nomiDeiMinorenni = usersList.stream().filter(user -> user.getAge() < 18).map(user -> user.getName()).toList();
 		System.out.println(nomiDeiMinorenni);
+
+
+		// ************************************************** REDUCE ***********************************
+		System.out.println(usersList.stream()
+				.filter(user -> user.getAge() < 18)
+				.map(user -> user.getAge())
+				.reduce(0, (partialSum, currentElem) -> partialSum + currentElem));
+		// System.out.println(usersList.stream().map(User::getAge).reduce(0, Integer::sum));
+
+		// ************************************************** ALLMATCH & ANYMATCH ***********************************
+		// .some() .every() di JavaScript corrispondono a .anyMatch e .allMatch di Java
+
+		// Controllo se tutti gli utenti sono maggiorenni
+		if(usersList.stream().allMatch(user -> user.getAge() >= 18)) {
+			System.out.println("Tutti gli utenti della lista sono maggioreni");
+		} else {
+			System.out.println("C'è qualche minorenne");
+		}
+
+		if(usersList.stream().anyMatch(user -> user.getAge() > 900)) {
+			System.out.println("C'è ALMENO UNO che ha più di 900 anni");
+		} else {
+			System.out.println("Non ce ne sono");
+		}
 
 	}
 }
