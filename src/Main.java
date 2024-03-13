@@ -1,9 +1,7 @@
 import entities.User;
 import functional_interfaces.StringModifier;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -74,5 +72,22 @@ public class Main {
 		randomIntegers.stream().filter(num -> num > 0 && num < 100).forEach(num -> System.out.println(num));
 		// la stessa operazione di sopra può essere anche effettuata con un Predicate se definito in precedenza
 		randomIntegers.stream().filter(isMoreThanZero.and(isLessThanHundred)).forEach(num -> System.out.println(num));
+		usersList.stream().filter(user -> user.getAge() < 50).forEach(user -> System.out.println(user));
+
+
+		// ************************************************** STREAMS - MAP ***********************************
+		usersList.stream().map(user -> user.getAge()).forEach(num -> System.out.println(num));
+
+		System.out.println("--- MAP & FILTER ---");
+		usersList.stream().filter(user -> user.getAge() < 18).map(user -> user.getAge()).forEach(num -> System.out.println(num));
+
+		// ************************************************** RESTITUIRE UNA LISTA ***********************************
+		List<Integer> etàUtentiMinorenni = usersList.stream().filter(user -> user.getAge() < 18).map(user -> user.getAge()).toList();
+		// toList() termina lo Stream facendo finire tutti i dati in una Lista. toList è un'alternativa un po' più pratica al .collect
+		System.out.println(etàUtentiMinorenni);
+
+		List<String> nomiDeiMinorenni = usersList.stream().filter(user -> user.getAge() < 18).map(user -> user.getName()).toList();
+		System.out.println(nomiDeiMinorenni);
+
 	}
 }
